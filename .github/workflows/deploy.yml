@@ -3,14 +3,14 @@ name: Deploy to AWS S3
 on:
   push:
     branches:
-      - tarea-03 
+      - tarea-03  # Cambia si tu rama principal es otra
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Set up Node.js
