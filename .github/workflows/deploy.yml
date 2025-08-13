@@ -3,7 +3,7 @@ name: Deploy to AWS S3
 on:
   push:
     branches:
-      - tarea-03
+      - tarea-03 
 
 jobs:
   deploy:
@@ -19,7 +19,7 @@ jobs:
           node-version: 18
 
       - name: Install Doppler CLI
-        run: curl -Ls https://cli.doppler.com/install.sh | sh
+        uses: dopplerhq/cli-action@v3
 
       - name: Configure Doppler
         run: doppler login --token ${{ secrets.DOPPLER_TOKEN }}
