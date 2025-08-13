@@ -1,0 +1,74 @@
+body{
+    background-color: #000000;
+    font-family: 'Times New Roman', Times, serif;
+    margin: 0;
+    padding: 0;
+}
+
+h1{
+    color: #b20710;
+    text-align: center;
+    font-size: 4rem;
+}
+
+p{
+    text-align: center;
+    color: #ffffff;
+}
+
+.subtitulo {
+    font-size: 2rem;
+}
+
+.contenedor_perfiles{
+    display: flex;
+    flex-flow: row wrap;
+
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+    padding: 0 10%;
+    gap:25px
+}
+
+.profile{
+    text-align: center;
+    color: #ffffff;
+    padding: 0px;
+
+    
+}
+
+.profile img{
+
+    width: 150px;
+    height: auto;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.profile img:hover{
+    transform: scale(1.1)
+}
+
+.Botón{
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+.Botón button{
+    background-color: #000000;
+    color: #ffffff;
+    border-color: #ffffff;
+    padding: 10px 40px;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.Botón button:hover{
+    transform: scale(1.05);
+}
