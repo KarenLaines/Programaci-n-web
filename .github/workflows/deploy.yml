@@ -3,7 +3,7 @@ name: Deploy to AWS S3
 on:
   push:
     branches:
-      - tarea-03  # Cambia si tu rama principal es otra
+      - tarea-03  
 
 jobs:
   deploy:
@@ -16,13 +16,13 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 22
 
       - name: Install Doppler CLI
         uses: dopplerhq/cli-action@v3
+        with:
+          doppler-token: ${{ secrets.DOPPLER_TOKEN }}
 
-      - name: Configure Doppler
-        run: doppler login --token ${{ secrets.DOPPLER_TOKEN }}
 
       - name: Install dependencies
         run: npm install
@@ -35,4 +35,4 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: us-east-1
+          AWS_REGION: us-east-2
