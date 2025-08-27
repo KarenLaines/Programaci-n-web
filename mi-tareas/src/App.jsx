@@ -55,7 +55,7 @@ function App() {
 
   return (
     <div>
-      <h1>Gestión de Tareas</h1>
+      <h1>Gestión de Tarea</h1>
 
       {/* Formulario para agregar tarea */}
       <input
