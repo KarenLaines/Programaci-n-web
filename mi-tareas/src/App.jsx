@@ -1,28 +1,57 @@
 import { useState } from "react";
 
 function App() {
-  // Estado para la lista de tareas
+  // Lista de tareas
   const [tareas, setTareas] = useState([
     { id: 1, nombre: "Aprender React", estado: "Pendiente" },
     { id: 2, nombre: "Hacer ejercicio", estado: "Pendiente" }
   ]);
 
-  // Estado para el input (lo que escribe el usuario)
+  // Estado del input
   const [nuevaTarea, setNuevaTarea] = useState("");
 
-  // Función para manejar el agregado de una tarea
+  // Estado del filtro
+  const [filtro, setFiltro] = useState("Todas");
+
+  // Agregar nueva tarea
   const agregarTarea = () => {
-    if (nuevaTarea.trim() === "") return; // Evita tareas vacías
+    if (nuevaTarea.trim() === "") return;
 
     const tarea = {
-      id: Date.now(), // genera un id único basado en el tiempo actual
+      id: Date.now(),
       nombre: nuevaTarea,
       estado: "Pendiente"
     };
 
-    setTareas([...tareas, tarea]); // añadimos la nueva tarea
-    setNuevaTarea(""); // limpiamos el input
+    setTareas([...tareas, tarea]);
+    setNuevaTarea("");
   };
+
+  // Cambiar estado de una tarea
+  const cambiarEstado = (id) => {
+    const nuevasTareas = tareas.map((tarea) =>
+      tarea.id === id
+        ? {
+            ...tarea,
+            estado: tarea.estado === "Pendiente" ? "Completada" : "Pendiente"
+          }
+        : tarea
+    );
+    setTareas(nuevasTareas);
+  };
+
+  // Eliminar una tarea
+  const eliminarTarea = (id) => {
+    const nuevasTareas = tareas.filter((tarea) => tarea.id !== id);
+    setTareas(nuevasTareas);
+  };
+
+  // Filtrar tareas
+  const tareasFiltradas = tareas.filter((tarea) => {
+    if (filtro === "Pendientes") return tarea.estado === "Pendiente";
+    if (filtro === "Completadas") return tarea.estado === "Completada";
+    return true; // Todas
+  });
 
   return (
     <div>
@@ -37,11 +66,22 @@ function App() {
       />
       <button onClick={agregarTarea}>Agregar</button>
 
-      {/* Lista de tareas */}
+      {/* Botones de filtro */}
+      <div style={{ margin: "10px 0" }}>
+        <button onClick={() => setFiltro("Todas")}>Todas</button>
+        <button onClick={() => setFiltro("Pendientes")}>Pendientes</button>
+        <button onClick={() => setFiltro("Completadas")}>Completadas</button>
+      </div>
+
+      {/* Lista de tareas filtradas */}
       <ul>
-        {tareas.map((tarea) => (
+        {tareasFiltradas.map((tarea) => (
           <li key={tarea.id}>
-            {tarea.nombre} - {tarea.estado}
+            {tarea.nombre} - {tarea.estado}{" "}
+            <button onClick={() => cambiarEstado(tarea.id)}>
+              {tarea.estado === "Pendiente" ? "Completar " : "Reabrir "}
+            </button>
+            <button onClick={() => eliminarTarea(tarea.id)}> Eliminar</button>
           </li>
         ))}
       </ul>
