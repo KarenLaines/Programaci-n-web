@@ -1,92 +1,92 @@
-import { useState } from "react";
+  import { useState } from "react";
 
-function App() {
-  // Lista de tareas
-  const [tareas, setTareas] = useState([
-    { id: 1, nombre: "Aprender React", estado: "Pendiente" },
-    { id: 2, nombre: "Hacer ejercicio", estado: "Pendiente" }
-  ]);
+  function App() {
+    // Task list
+    const [tasks, setTasks] = useState([
+      { id: 1, name: "Learn React", status: "Pending" },
+      { id: 2, name: "Exercise", status: "Pending" }
+    ]);
 
-  // Estado del input
-  const [nuevaTarea, setNuevaTarea] = useState("");
+    // Input state
+    const [newTask, setNewTask] = useState("");
 
-  // Estado del filtro
-  const [filtro, setFiltro] = useState("Todas");
+    // Filter state
+    const [filter, setFilter] = useState("All");
 
-  // Agregar nueva tarea
-  const agregarTarea = () => {
-    if (nuevaTarea.trim() === "") return;
+    // Add new task
+    const addTask = () => {
+      if (newTask.trim() === "") return;
 
-    const tarea = {
-      id: Date.now(),
-      nombre: nuevaTarea,
-      estado: "Pendiente"
+      const task = {
+        id: Date.now(),
+        name: newTask,
+        status: "Pending"
+      };
+
+      setTasks([...tasks, task]);
+      setNewTask("");
     };
 
-    setTareas([...tareas, tarea]);
-    setNuevaTarea("");
-  };
+    // Change task status
+    const toggleStatus = (id) => {
+      const updatedTasks = tasks.map((task) =>
+        task.id === id
+          ? {
+              ...task,
+              status: task.status === "Pending" ? "Completed" : "Pending"
+            }
+          : task
+      );
+      setTasks(updatedTasks);
+    };
 
-  // Cambiar estado de una tarea
-  const cambiarEstado = (id) => {
-    const nuevasTareas = tareas.map((tarea) =>
-      tarea.id === id
-        ? {
-            ...tarea,
-            estado: tarea.estado === "Pendiente" ? "Completada" : "Pendiente"
-          }
-        : tarea
-    );
-    setTareas(nuevasTareas);
-  };
+    // Delete a task
+    const deleteTask = (id) => {
+      const updatedTasks = tasks.filter((task) => task.id !== id);
+      setTasks(updatedTasks);
+    };
 
-  // Eliminar una tarea
-  const eliminarTarea = (id) => {
-    const nuevasTareas = tareas.filter((tarea) => tarea.id !== id);
-    setTareas(nuevasTareas);
-  };
+    // Filter tasks
+    const filteredTasks = tasks.filter((task) => {
+      if (filter === "Pending") return task.status === "Pending";
+      if (filter === "Completed") return task.status === "Completed";
+      return true; // All
+    });
 
-  // Filtrar tareas
-  const tareasFiltradas = tareas.filter((tarea) => {
-    if (filtro === "Pendientes") return tarea.estado === "Pendiente";
-    if (filtro === "Completadas") return tarea.estado === "Completada";
-    return true; // Todas
-  });
+    return (
+      <div>
+        <h1>Task Manager</h1>
 
-  return (
-    <div>
-      <h1>Gestión de Tareas</h1>
+        {/* Form to add task */}
+        <input
+          type="text"
+          value={newTask}
+          onChange={(e) => setNewTask(e.target.value)}
+          placeholder="Write a task..."
+        />
+        <button onClick={addTask}>Add</button>
 
-      {/* Formulario para agregar tarea */}
-      <input
-        type="text"
-        value={nuevaTarea}
-        onChange={(e) => setNuevaTarea(e.target.value)}
-        placeholder="Escribe una tarea..."
-      />
-      <button onClick={agregarTarea}>Agregar</button>
+        {/* Filter buttons */}
+        <div style={{ margin: "10px 0" }}>
+          <button onClick={() => setFilter("All")}>All</button>
+          <button onClick={() => setFilter("Pending")}>Pending</button>
+          <button onClick={() => setFilter("Completed")}>Completed</button>
+        </div>
 
-      {/* Botones de filtro */}
-      <div style={{ margin: "10px 0" }}>
-        <button onClick={() => setFiltro("Todas")}>Todas</button>
-        <button onClick={() => setFiltro("Pendientes")}>Pendientes</button>
-        <button onClick={() => setFiltro("Completadas")}>Completadas</button>
+        {/* Filtered task list */}
+        <ul>
+          {filteredTasks.map((task) => (
+            <li key={task.id}>
+              {task.name} - {task.status}{" "}
+              <button onClick={() => toggleStatus(task.id)}>
+                {task.status === "Pending" ? "Complete" : "Reopen"}
+              </button>
+              <button onClick={() => deleteTask(task.id)}>Delete</button>
+            </li>
+          ))}
+        </ul>
       </div>
+    );
+  }
 
-      {/* Lista de tareas filtradas */}
-      <ul>
-        {tareasFiltradas.map((tarea) => (
-          <li key={tarea.id}>
-            {tarea.nombre} - {tarea.estado}{" "}
-            <button onClick={() => cambiarEstado(tarea.id)}>
-              {tarea.estado === "Pendiente" ? "Completar " : "Reabrir "}
-            </button>
-            <button onClick={() => eliminarTarea(tarea.id)}> Eliminar</button>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
-export default App;
+  export default App;
