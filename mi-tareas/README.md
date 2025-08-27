@@ -1,12 +1,21 @@
-# React + Vite
+## Enlace al proyecto en CloudFront
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+[Ver la app en CloudFront](dat27m0pdjgeq.cloudfront.net)
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## HOOKS UTILIZADOS
 
-## Expanding the ESLint configuration
+En esta aplicación usamos los siguientes hooks de React:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### useState
+- **Qué hace:** Permite crear y manejar estados dentro de un componente funcional.
+- **Por qué lo usamos:** 
+  - `tareas` y `setTareas`: para guardar y actualizar la lista de tareas.
+  - `nuevaTarea` y `setNuevaTarea`: para manejar el valor del input al escribir una nueva tarea.
+  - `filtro` y `setFiltro`: para controlar qué tareas mostrar (Todas, Pendientes o Completadas).
+
+### Cómo se aplica en el proyecto
+- Cuando agregas una tarea nueva, usamos `setTareas` para añadirla a la lista.
+- Al cambiar el estado de una tarea (Pendiente ↔ Completada), usamos `setTareas` para actualizar el objeto correspondiente.
+- Al escribir en el input, `setNuevaTarea` mantiene el valor en el estado.
+- Los botones de filtro usan `setFiltro` para decidir qué tareas se muestran en la lista.
