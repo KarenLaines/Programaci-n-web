@@ -22,3 +22,9 @@ class ProductImage(models.Model):
     image_url = models.URLField()
     caption = models.CharField(max_length=200, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+
+class ProductInventory(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='inventory')
+    sku = models.CharField(max_length=50, blank=True)
+    stock = models.PositiveIntegerField(default=0)
+    last_updated = models.DateTimeField(auto_now=True)
