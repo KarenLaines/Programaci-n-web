@@ -1,4 +1,4 @@
-# Imagen base oficial de Python (tag específico)
+# Imagen base oficial de Python
 FROM python:3.12-slim
 
 # Crear usuario no root
@@ -14,8 +14,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-# Exponer el puerto de Django
+
 EXPOSE 8000
 
-# Comando por defecto (se puede sobrescribir en docker-compose)
+
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
