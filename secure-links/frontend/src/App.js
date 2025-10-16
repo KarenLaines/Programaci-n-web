@@ -10,8 +10,9 @@ function App() {
     e.preventDefault();
     try {
       const res = await axios.post(`${process.env.REACT_APP_API_BASE}/hide/`, { secret });
-
+      console.log(res.data); // <--- así ves qué devuelve
       setLink(`http://scrt.link/${res.data.id}`);
+
 
       setSecret("");
     } catch (err) {

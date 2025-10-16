@@ -15,21 +15,18 @@ def generate_unique_key():
 
 @api_view(['POST'])
 def hide_secret(request):
-    message = request.data.get('message')
+    message = request.data.get('secret')  # React envía 'secret'
     if not message:
         return Response({'error': 'Debe enviar un mensaje'}, status=status.HTTP_400_BAD_REQUEST)
 
     key = generate_unique_key()
-    # opcional: agregar TTL (en segundos) si quieres que caduque
-    # redis_client.set(key, message, ex=60*60)  # caduca en 1 hora
     redis_client.set(key, message)
-    return Response({'key': key}, status=status.HTTP_201_CREATED)
-
+    return Response({'id': key}, status=status.HTTP_201_CREATED)  # <-- cambiar key a id
 
 @api_view(['GET'])
-def reveal_secret(request, key):
-    message = redis_client.get(key)
+def reveal_secret(request, id):
+    message = redis_client.get(id)
     if not message:
         return Response({'error': 'Este secreto ya fue revelado o no existe'}, status=status.HTTP_404_NOT_FOUND)
-    redis_client.delete(key)
-    return Response({'message': message}, status=status.HTTP_200_OK)
+    redis_client.delete(id)
+    return Response({'secret': message}, status=status.HTTP_200_OK)
