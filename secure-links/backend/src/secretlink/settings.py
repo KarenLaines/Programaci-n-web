@@ -10,29 +10,24 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+
+
 from pathlib import Path
+import os
+from dotenv import load_dotenv
+load_dotenv()  # carga .env si existe
 
-REDIS_HOST = 'redis'
-REDIS_PORT = 6379
-
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Redis config from env for Docker flexibility
+REDIS_HOST = os.getenv("REDIS_HOST", "redis")
+REDIS_PORT = int(os.getenv("REDIS_PORT", 6379))
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
+# existing SECRET_KEY, DEBUG, etc...
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "django-insecure-devkey")
+DEBUG = os.getenv("DJANGO_DEBUG", "True") == "True"
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-@3y&(j$-h1*7$)dpjy*=4f%uejk3^8!5v-(wjb6e8t)rc1xo1v'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
-
-# Application definition
+ALLOWED_HOSTS = ["*"]  # para desarrollo
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -41,11 +36,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',  
-    'links',  # Nuestra app
+    'rest_framework',
+    'corsheaders',
+    'links',   
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',  # debe ir arriba
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -55,7 +52,16 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# CORS: permitir frontend en desarrollo
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
+# si quieres permitir cualquier origen en dev:
+# CORS_ALLOW_ALL_ORIGINS = True
+
 ROOT_URLCONF = 'secretlink.urls'
+
+
 
 TEMPLATES = [
     {
@@ -126,3 +132,8 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
